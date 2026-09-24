@@ -14,14 +14,33 @@ export default function Home() {
   // Direct Google Drive Download Link for JeevanSetu APK
   const APK_DOWNLOAD_URL = "https://drive.google.com/uc?export=download&id=YOUR_JEEVANSETU_APK_ID";
 
-  // Video source placeholder (Replace with your actual video path when ready)
-  const DEMO_VIDEO_SRC = "/demo.mp4";
+  // Video source placeholder
+  const DEMO_VIDEO_SRC = "/reel.mp4";
+
+  // UI Showcase Screens Array (from public/ directory)
+  const UI_SCREENS = [
+    '/1.jpg',
+    '/2.jpg',
+    '/3.jpg',
+    '/4.jpg',
+  ];
+
+  // State & Effect for Auto-Rotating Phone Carousel (Changes every 2 seconds)
+  const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentScreenIndex((prevIndex) => (prevIndex + 1) % UI_SCREENS.length);
+    }, 2000);
+
+    return () => clearInterval(timer);
+  }, [UI_SCREENS.length]);
 
   // Scroll Progress State for Interactive Simulation
   const [scrollProgress, setScrollProgress] = useState(0);
   const simRef = useRef<HTMLDivElement>(null);
 
-  // Mobile-Optimized Scroll Calculation (Triggers early on mobile viewports)
+  // Mobile-Optimized Scroll Calculation
   useEffect(() => {
     const handleScroll = () => {
       if (!simRef.current) return;
@@ -196,7 +215,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Phone Mockup Screen with Video Player */}
+          {/* Top Phone Mockup Screen (Video Player) */}
           <div className="lg:col-span-5 flex justify-center mt-6 lg:mt-0">
             <div className="relative w-[280px] sm:w-[320px] h-[570px] sm:h-[650px] bg-[#1a1a1b] rounded-[48px] sm:rounded-[54px] p-2.5 sm:p-3 shadow-2xl border-[4px] border-[#2c2c2e]">
               
@@ -389,6 +408,73 @@ export default function Home() {
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* App Showcase Section with Auto-Rotating Mockup */}
+        <section className="mt-20 sm:mt-32 pt-12 sm:pt-16 border-t border-black/15 flex flex-col items-center text-center">
+          <div className="text-xs font-semibold tracking-wider text-[#800000] uppercase mb-3 sm:mb-4">
+            Interface Showcase
+          </div>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif mb-4">
+            Designed for Speed and Clarity
+          </h2>
+          <p className="text-xs sm:text-sm text-gray-600 max-w-lg mb-10">
+            A seamless experience built for emergency drivers and authorities to report, track, and clear paths effortlessly.
+          </p>
+
+          {/* Rotating Phone Mockup */}
+          <div className="relative w-[280px] sm:w-[320px] h-[570px] sm:h-[650px] bg-[#1a1a1b] rounded-[48px] sm:rounded-[54px] p-2.5 sm:p-3 shadow-2xl border-[4px] border-[#2c2c2e]">
+            
+            {/* Side Buttons */}
+            <div className="absolute -left-[7px] top-24 w-[3px] h-8 bg-[#3a3a3c] rounded-l-sm"></div>
+            <div className="absolute -left-[7px] top-36 w-[3px] h-12 bg-[#3a3a3c] rounded-l-sm"></div>
+            <div className="absolute -right-[7px] top-28 w-[3px] h-14 bg-[#3a3a3c] rounded-r-sm"></div>
+
+            {/* Display Area */}
+            <div className="relative w-full h-full bg-black rounded-[38px] sm:rounded-[44px] overflow-hidden">
+              
+              {/* Dynamic Island Notch */}
+              <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 sm:w-28 h-4 sm:h-5 bg-black rounded-full z-30 shadow-md pointer-events-none"></div>
+
+              {/* Cross-fading UI Screen Images (Changes every 2s) */}
+              {UI_SCREENS.map((src, index) => (
+                <div
+                  key={src}
+                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                    index === currentScreenIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                  }`}
+                >
+                  <Image
+                    src={src}
+                    alt={`App Interface Screen ${index + 1}`}
+                    fill
+                    sizes="(max-width: 640px) 280px, 320px"
+                    className="object-cover"
+                    priority={index === 0}
+                  />
+                </div>
+              ))}
+
+              {/* Bottom Home Bar Indicator */}
+              <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-28 h-1 bg-white/60 rounded-full z-20 pointer-events-none"></div>
+            </div>
+          </div>
+
+          {/* Interactive Indicator Pills */}
+          <div className="flex items-center gap-2 mt-6">
+            {UI_SCREENS.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentScreenIndex(index)}
+                aria-label={`Show screen ${index + 1}`}
+                className={`h-2.5 rounded-full transition-all duration-300 ${
+                  index === currentScreenIndex
+                    ? 'bg-[#800000] w-6'
+                    : 'bg-gray-300 hover:bg-gray-400 w-2.5'
+                }`}
+              />
+            ))}
           </div>
         </section>
       </main>
