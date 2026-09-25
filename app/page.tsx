@@ -12,7 +12,7 @@ export default function Home() {
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
   // Direct Google Drive Download Link for JeevanSetu APK
-  const APK_DOWNLOAD_URL = "https://drive.google.com/uc?export=download&id=YOUR_JEEVANSETU_APK_ID";
+  const APK_DOWNLOAD_URL = "https://drive.google.com/file/d/1YbmJ-tzbPgPvO5e4i99gi0uME9SxkeBy/view?usp=drivesdk";
 
   // Video source placeholder
   const DEMO_VIDEO_SRC = "/reel.mp4";
